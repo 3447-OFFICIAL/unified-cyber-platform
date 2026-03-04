@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Region {
+  id           String        @id @default(uuid())
+  name         String        @unique // e.g., "India", "USA"
+  code         String        @unique // e.g., "IN", "US"
+  articles     Article[]
+  helplines    Helpline[]
+  cyberPortals CyberPortal[]
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  name     String    @unique // e.g., "Cybercrime Cases", "Advisories", "Educational"
+  articles Article[]
+}
+
+model Article {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  sourceUrl   String   @unique
+  publishDate DateTime @default(now())
+  
+  regionId    String
+  region      Region   @relation(fields: [regionId], references: [id])
+  
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  
+  @@index([regionId, categoryId])
+}
+
+model Helpline {
+  id           String   @id @default(uuid())
+  name         String
+  purpose      String
+  contact      String
+  availability String
+  
+  regionId     String
+  region       Region   @relation(fields: [regionId], references: [id])
+  
+  updateLogs   UpdateLog[]
+}
+
+model CyberPortal {
+  id          String   @id @default(uuid())
+  crimeType   String
+  portalName  String
+  description String
+  officialUrl String
+  
+  regionId    String
+  region      Region   @relation(fields: [regionId], references: [id])
+  
+  updateLogs  UpdateLog[]
+}
+
+model ChatSession {
+  id        String   @id @default(uuid())
+  sessionId String   @unique // Could be fingerprint/IP hash for anonymous mapping
+  history   String   // JSON stringified history of messages
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UpdateLog {
+  id           String       @id @default(uuid())
+  entityType   String       // "Helpline", "CyberPortal"
+  entityId     String
+  changes      String       // JSON description of what changed
+  detectedAt   DateTime     @default(now())
+
+  // Optional relations - typically handled conceptually if entity exists
+  helpline     Helpline?    @relation(fields: [helplineId], references: [id])
+  helplineId   String?
+  cyberPortal  CyberPortal? @relation(fields: [cyberPortalId], references: [id])
+  cyberPortalId String?
+}
