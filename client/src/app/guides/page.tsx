@@ -81,7 +81,7 @@ export default function GuidesPage() {
     };
 
     return (
-        <div className="container" style={{ maxWidth: "900px" }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto", padding: "2rem 1rem", width: "100%" }}>
             <header style={{ marginBottom: "3rem", textAlign: "center" }}>
                 <h1 style={{ fontSize: "2.5rem", marginBottom: "0.5rem", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundImage: "linear-gradient(90deg, #ef4444, #f59e0b)" }}>
                     Incidence Response Guides
