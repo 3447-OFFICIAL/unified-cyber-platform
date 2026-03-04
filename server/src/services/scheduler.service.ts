@@ -31,9 +31,9 @@ const RSS_FEEDS: Array<{ regionCode: string; categoryName: string; feedUrl: stri
         feedUrl: "https://wid.cert-bund.de/content/public/securityAdvisory/rss", // Official CERT-Bund Web
     },
     {
-        regionCode: "EE",
+        regionCode: "GB",
         categoryName: "Cyber Security News",
-        feedUrl: "https://krebsonsecurity.com/feed/", // Fallback for Estonia CERT 403
+        feedUrl: "https://www.ncsc.gov.uk/api/1/services/v1/all-rss-feed.xml", // Official UK NCSC feed
     },
 ];
 

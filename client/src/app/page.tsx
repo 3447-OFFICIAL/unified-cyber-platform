@@ -135,7 +135,7 @@ export default function DashboardPage() {
               {regionCode === "IN" ? "National Cyber Crime Reporting Portal (Official) — Dial " :
                 regionCode === "US" ? "CISA / FBI Cyber Incident Response — Dial " :
                   regionCode === "DE" ? "BSI IT-Sicherheitslagezentrum — Dial " :
-                    "National CERT Incident Response — Dial "}
+                    "Action Fraud National Cyber Crime Reporting Centre — Dial "}
               <span style={{
                 color: "var(--accent)",
                 fontWeight: 900,
@@ -146,7 +146,7 @@ export default function DashboardPage() {
                 {regionCode === "IN" ? "1930" :
                   regionCode === "US" ? "1-800-CALL-FBI" :
                     regionCode === "DE" ? "+49 228 9582-444" :
-                      "CERT-EE Helpline"}
+                      "0300 123 2040"}
               </span>
             </div>
           </div>

@@ -121,7 +121,7 @@ export default function Navbar() {
                             value={selectedRegion}
                             onChange={(e) => handleRegionChange(e.target.value)}
                             style={{
-                                background: "rgba(30, 58, 95, 0.3)", color: "var(--text-primary)",
+                                background: "var(--bg-primary)", color: "var(--text-primary)",
                                 border: "1px solid var(--border)", borderRadius: 10,
                                 padding: "0.5rem 1rem", fontSize: "0.85rem",
                                 cursor: "pointer", outline: "none",

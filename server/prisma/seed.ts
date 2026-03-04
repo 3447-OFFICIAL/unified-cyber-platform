@@ -21,10 +21,10 @@ async function main() {
         update: {},
         create: { name: "Germany", code: "DE" },
     });
-    const estonia = await prisma.region.upsert({
-        where: { code: "EE" },
+    const uk = await prisma.region.upsert({
+        where: { code: "GB" },
         update: {},
-        create: { name: "Estonia", code: "EE" },
+        create: { name: "United Kingdom", code: "GB" },
     });
 
     // Create Categories
@@ -169,32 +169,32 @@ async function main() {
         await prisma.cyberPortal.upsert({ where: { id: p.id }, update: {}, create: p });
     }
 
-    // Seed Helplines - Estonia
+    // Seed Helplines - United Kingdom
     await prisma.helpline.upsert({
-        where: { id: "helpline-ee-1" },
+        where: { id: "helpline-uk-1" },
         update: {},
         create: {
-            id: "helpline-ee-1",
-            name: "CERT-EE Helpline",
-            purpose: "Estonian Information System Authority cybersecurity reporting",
-            contact: "+372 663 0299",
+            id: "helpline-uk-1",
+            name: "Action Fraud",
+            purpose: "National Fraud & Cyber Crime Reporting Centre",
+            contact: "0300 123 2040",
             availability: "24/7",
-            regionId: estonia.id,
+            regionId: uk.id,
         },
     });
 
-    // Seed Portals - Estonia
-    const estoniaPortals = [
+    // Seed Portals - United Kingdom
+    const ukPortals = [
         {
-            id: "portal-ee-1",
-            crimeType: "Cyber Incidents / Phishing",
-            portalName: "CERT-EE Reporting Portal",
-            description: "Report cyber incidents, phishing, and malware to CERT Estonia",
-            officialUrl: "https://www.ria.ee",
-            regionId: estonia.id,
+            id: "portal-uk-1",
+            crimeType: "Cybercrime / Fraud",
+            portalName: "Action Fraud Reporting Tool",
+            description: "Report fraud and cybercrime directly to the UK police",
+            officialUrl: "https://www.actionfraud.police.uk",
+            regionId: uk.id,
         }
     ];
-    for (const p of estoniaPortals) {
+    for (const p of ukPortals) {
         await prisma.cyberPortal.upsert({ where: { id: p.id }, update: {}, create: p });
     }
 
@@ -290,12 +290,12 @@ async function main() {
             categoryId: categories["Advisories"].id,
         },
         {
-            id: "article-ee-1",
-            title: "Estonia's E-Residency Program Fortifies Defenses After Cyber Attack Attempt",
-            content: "RIA (Estonian Information System Authority) successfully mitigated a distributed denial-of-service (DDoS) attack targeting the e-Residency infrastructure. No data was compromised.",
-            sourceUrl: "https://www.ria.ee/en/news/e-residency-ddos-mitigation",
-            regionId: estonia.id,
-            categoryId: categories["Cybercrime Cases"].id,
+            id: "article-uk-1",
+            title: "NCSC Issues Alert Over State-Sponsored Phishing Campaigns",
+            content: "The National Cyber Security Centre (NCSC) has warned UK organizations about a sophisticated, state-sponsored spear-phishing campaign aiming to harvest credentials from government contractors.",
+            sourceUrl: "https://www.ncsc.gov.uk/news/spear-phishing-alert",
+            regionId: uk.id,
+            categoryId: categories["Advisories"].id,
         },
     ];
 
@@ -304,9 +304,9 @@ async function main() {
     }
 
     console.log("✅ Database seeded successfully!");
-    console.log(`   Regions: India, USA, Germany, Estonia`);
-    console.log(`   Helplines: 7 (3 India, 2 USA, 1 Germany, 1 Estonia)`);
-    console.log(`   Portals: 10 (4 India, 4 USA, 1 Germany, 1 Estonia)`);
+    console.log(`   Regions: India, USA, Germany, United Kingdom`);
+    console.log(`   Helplines: 7 (3 India, 2 USA, 1 Germany, 1 UK)`);
+    console.log(`   Portals: 10 (4 India, 4 USA, 1 Germany, 1 UK)`);
     console.log(`   Articles: ${sampleArticles.length}`);
 }
 
