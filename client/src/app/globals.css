@@ -1,31 +1,49 @@
 @import "tailwindcss";
 
 :root {
+  /* Backgrounds */
   --bg-primary: #050914;
-  --bg-card: rgba(13, 21, 38, 0.7);
-  --bg-card-hover: rgba(17, 29, 53, 0.9);
-  --border: rgba(30, 58, 95, 0.6);
-  --accent: #258cf4;
-  --accent-secondary: #7c3aed;
+  --bg-secondary: #0a1122;
+  --bg-card: rgba(13, 21, 38, 0.4);
+  --bg-card-hover: rgba(20, 32, 58, 0.6);
+
+  /* Text */
   --text-primary: #f8fafc;
-  --text-muted: #94a3b8;
-  --danger: #ef4444;
-  --success: #22c55e;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+
+  /* Accents */
+  --accent: #00f2ff;
+  /* Cyber Cyan */
+  --accent-secondary: #ff6b00;
+  /* Tactical Orange */
+  --accent-glow: rgba(0, 242, 255, 0.4);
+
+  /* System */
+  --border: rgba(30, 58, 95, 0.3);
+  --border-bright: rgba(0, 242, 255, 0.2);
+  --danger: #ff2e63;
+  --success: #08f7af;
   --warning: #f59e0b;
-  --neon-glow: rgba(37, 140, 244, 0.4);
+
+  /* Effects */
+  --glass-blur: blur(12px);
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
   --grid-color: rgba(30, 58, 95, 0.1);
 }
 
 .light {
-  --bg-primary: #ffffff;
-  --bg-card: #f8fafc;
-  --bg-card-hover: #f1f5f9;
-  --border: #cbd5e1;
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-card-hover: rgba(255, 255, 255, 0.9);
+  --text-primary: #050914;
+  --text-secondary: #1e293b;
+  --text-muted: #64748b;
+  --border: rgba(30, 58, 95, 0.1);
   --accent: #2563eb;
   --accent-secondary: #7c3aed;
-  --text-primary: #0f172a;
-  --text-muted: #475569;
-  --neon-glow: rgba(37, 99, 235, 0.05);
+  --accent-glow: rgba(37, 99, 235, 0.1);
   --grid-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -35,7 +53,7 @@
   padding: 0;
 }
 
-html,
+/* Base Utility Overrides */
 body {
   background-color: var(--bg-primary);
   background-image:
@@ -47,6 +65,33 @@ body {
   font-family: 'Inter', 'Segoe UI', sans-serif;
   min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+}
+
+.glass-interactive {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-interactive:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-bright);
+  transform: translateY(-2px);
+}
+
+.neon-text {
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.neon-border {
+  box-shadow: 0 0 15px var(--accent-glow);
 }
 
 /* Scrollbar */

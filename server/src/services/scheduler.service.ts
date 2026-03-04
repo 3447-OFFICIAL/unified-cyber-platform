@@ -17,7 +17,7 @@ const lastFetch: Record<string, number> = {};
 const RSS_FEEDS: Array<{ regionCode: string; categoryName: string; feedUrl: string }> = [
     {
         regionCode: "IN",
-        categoryName: "Cyber Security News",
+        categoryName: "Advisories",
         feedUrl: "https://feeds.feedburner.com/TheHackersNews", // Fallback for malformed CERT-In XML
     },
     {
@@ -32,7 +32,7 @@ const RSS_FEEDS: Array<{ regionCode: string; categoryName: string; feedUrl: stri
     },
     {
         regionCode: "GB",
-        categoryName: "Cyber Security News",
+        categoryName: "Advisories",
         feedUrl: "https://www.ncsc.gov.uk/api/1/services/v1/all-rss-feed.xml", // Official UK NCSC feed
     },
 ];

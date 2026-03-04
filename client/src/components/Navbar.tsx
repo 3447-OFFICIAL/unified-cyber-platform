@@ -1,8 +1,14 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { api, Region } from "../lib/api";
+import {
+    Shield, LayoutDashboard, AlertCircle, PhoneCall, Link as LinkIcon,
+    BrainCircuit, ShieldEllipsis, Sun, Moon, Globe
+} from "lucide-react";
 
 const REGION_KEY = "selectedRegionCode";
 
@@ -37,55 +43,72 @@ export default function Navbar() {
     };
 
     const navLinks = [
-        { href: "/", label: "Dashboard", icon: "⬡" },
-        { href: "/advisories", label: "Advisories", icon: "📋" },
-        { href: "/helplines", label: "Helplines", icon: "📞" },
-        { href: "/portals", label: "Portals", icon: "🔗" },
-        { href: "/analyzer", label: "AI Analyzer", icon: "🧠" },
-        { href: "/guides", label: "Guides", icon: "🛡️" },
+        { href: "/", label: "Ops Center", icon: LayoutDashboard },
+        { href: "/advisories", label: "Advisories", icon: AlertCircle },
+        { href: "/helplines", label: "Helplines", icon: PhoneCall },
+        { href: "/portals", label: "Portals", icon: LinkIcon },
+        { href: "/analyzer", label: "AI Analyzer", icon: BrainCircuit },
+        { href: "/guides", label: "Guides", icon: ShieldEllipsis },
     ];
 
     return (
-        <nav style={{
-            background: "var(--bg-card)",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
-            borderBottom: "1px solid var(--border)",
+        <div style={{
             position: "sticky",
-            top: 0,
-            zIndex: 50,
+            top: 16,
+            zIndex: 100,
             padding: "0 2rem",
+            display: "flex",
+            justifyContent: "center"
         }}>
-            <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", height: 64, gap: "2rem" }}>
+            <nav className="glass" style={{
+                height: 64,
+                width: "100%",
+                maxWidth: 1200,
+                borderRadius: 20,
+                display: "flex",
+                alignItems: "center",
+                padding: "0 1.5rem",
+                gap: "1.5rem",
+                border: "1px solid var(--border-bright)"
+            }}>
                 {/* Logo */}
                 <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-                    <div style={{
-                        width: 36, height: 36, borderRadius: 8,
-                        background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))",
+                    <div className="neon-border" style={{
+                        width: 32, height: 32, borderRadius: 8,
+                        background: "var(--accent)",
                         display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: "1.1rem", fontWeight: 900, color: "white",
-                    }}>🛡</div>
+                        color: "var(--bg-primary)",
+                    }}>
+                        <Shield size={20} fill="currentColor" />
+                    </div>
                     <div>
-                        <div style={{ fontWeight: 800, fontSize: "0.95rem", color: "var(--text-primary)", lineHeight: 1.1 }}>UCRIP</div>
-                        <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "0.05em" }}>CYBER INTELLIGENCE</div>
+                        <div style={{ fontWeight: 900, fontSize: "0.9rem", color: "var(--text-primary)", letterSpacing: "0.05em" }}>UCRIP</div>
+                        <div style={{ fontSize: "0.55rem", color: "var(--accent)", fontWeight: 800, letterSpacing: "0.1em" }}>TACTICAL INTEL</div>
                     </div>
                 </Link>
 
                 {/* Nav Links */}
-                <div style={{ display: "flex", gap: "0.25rem", flex: 1 }}>
+                <div style={{ display: "flex", gap: "0.5rem", flex: 1, justifyContent: "center" }}>
                     {navLinks.map((link) => {
                         const active = pathname === link.href;
+                        const Icon = link.icon;
                         return (
-                            <Link key={link.href} href={link.href} style={{
-                                display: "flex", alignItems: "center", gap: 6,
-                                padding: "0.4rem 0.9rem", borderRadius: 8,
-                                textDecoration: "none", fontSize: "0.875rem", fontWeight: 500,
-                                transition: "all 0.2s",
-                                background: active ? "rgba(37, 140, 244,0.1)" : "transparent",
-                                color: active ? "var(--accent)" : "var(--text-muted)",
-                                border: active ? "1px solid rgba(37, 140, 244,0.2)" : "1px solid transparent",
-                            }}>
-                                <span>{link.icon}</span> {link.label}
+                            <Link key={link.href} href={link.href} style={{ textDecoration: "none" }}>
+                                <motion.div
+                                    whileHover={{ y: -2 }}
+                                    style={{
+                                        display: "flex", alignItems: "center", gap: 8,
+                                        padding: "0.5rem 0.8rem", borderRadius: 12,
+                                        fontSize: "0.8rem", fontWeight: 700,
+                                        transition: "all 0.2s",
+                                        background: active ? "rgba(0, 242, 255, 0.1)" : "transparent",
+                                        color: active ? "var(--accent)" : "var(--text-muted)",
+                                        border: active ? "1px solid var(--border-bright)" : "1px solid transparent",
+                                    }}
+                                >
+                                    <Icon size={14} />
+                                    <span style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>{link.label}</span>
+                                </motion.div>
                             </Link>
                         );
                     })}
@@ -95,46 +118,58 @@ export default function Navbar() {
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <button
                         onClick={toggleTheme}
+                        className="glass-interactive"
                         style={{
-                            background: "rgba(30, 58, 95, 0.3)",
+                            background: "transparent",
                             border: "1px solid var(--border)",
-                            borderRadius: 10,
-                            width: 40,
-                            height: 40,
+                            borderRadius: 12,
+                            width: 36,
+                            height: 36,
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             cursor: "pointer",
-                            fontSize: "1.2rem",
-                            transition: "all 0.2s"
+                            color: "var(--text-primary)"
                         }}
-                        title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
                     >
-                        {theme === "dark" ? "🌙" : "☀️"}
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={theme}
+                                initial={{ rotate: -20, opacity: 0 }}
+                                animate={{ rotate: 0, opacity: 1 }}
+                                exit={{ rotate: 20, opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                {theme === "dark" ? <Moon size={18} /> : <Sun size={18} />}
+                            </motion.div>
+                        </AnimatePresence>
                     </button>
 
-                    <div style={{ height: 24, width: 1, background: "var(--border)" }} />
+                    <div style={{ height: 20, width: 1, background: "var(--border)" }} />
 
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>REGION</span>
+                        <Globe size={14} color="var(--text-muted)" />
                         <select
                             value={selectedRegion}
                             onChange={(e) => handleRegionChange(e.target.value)}
                             style={{
-                                background: "var(--bg-primary)", color: "var(--text-primary)",
-                                border: "1px solid var(--border)", borderRadius: 10,
-                                padding: "0.5rem 1rem", fontSize: "0.85rem",
-                                cursor: "pointer", outline: "none",
-                                fontWeight: 600
+                                background: "transparent",
+                                color: "var(--text-primary)",
+                                border: "none",
+                                fontSize: "0.75rem",
+                                cursor: "pointer",
+                                outline: "none",
+                                fontWeight: 800,
+                                textTransform: "uppercase"
                             }}
                         >
                             {regions.map((r) => (
-                                <option key={r.code} value={r.code}>{r.name}</option>
+                                <option key={r.code} value={r.code} style={{ background: "var(--bg-primary)" }}>{r.code}</option>
                             ))}
                         </select>
                     </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
     );
 }
