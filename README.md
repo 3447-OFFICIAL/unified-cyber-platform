@@ -6,9 +6,13 @@ UCRIP is a production-ready, region-aware cybercrime intelligence platform. It a
 
 ## 🌟 Features
 
-*   **Cyber-Noir Tactical UX/UI**: A premium, high-trust visual design featuring interactive glassmorphism, dynamic data grids, and neon typography for an immersive user experience.
-*   **3D Threat Globe Centerpiece**: A dynamic, interactive 3D globe powered by Three.js and React Three Fiber, visualizing active monitoring regions with atmospheric and particle effects.
-*   **Region-Aware Architecture**: Dynamically filters content and stats for active coverage areas (India, USA, Germany, UK, etc.).
+*   **Cyber-Noir Tactical UX/UI**: A premium, high-trust visual design featuring interactive glassmorphism, dynamic data grids, and neon typography.
+*   **High-Fidelity 3D Tactical Globe**: 
+    - **Dotted Data Grid**: Continents and landmasses rendered as glowing cyan points.
+    - **Geographical Sync**: Threat markers (India, USA, Germany, UK) are mathematically calibrated and rotate in perfect 1:1 synchronization.
+    - **Atmospheric Effects**: Multi-layered glowing halo and pulsing "live" markers.
+    - **HUD Overlays**: "Tactical Intel" and "Vector Targeting" data readouts.
+*   **Region-Aware Architecture**: Dynamically filters content and stats for coverage areas.
 *   **AI Chatbot (CyberGuide AI)**: Integrated with the Gemini AI API to provide region-specific guidance and empathy for cybercrime victims. Features full markdown support for readable, structured advice and a maximized immersive chat mode.
 *   **Real-time RSS Threat Feed Engine**: Automated backend scheduler uses Node-Cron to fetch the latest advisories directly from official government feeds (like CISA, NCSC, CERT-In).
 *   **Dynamic Response Guides**: Actionable, mobile-optimized incident response checklists for common cyber attacks (Ransomware, Phishing, UPI Fraud).
