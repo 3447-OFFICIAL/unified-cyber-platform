@@ -3,27 +3,24 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-    const cats = await prisma.category.findMany({
-        include: {
-            _count: {
-                select: { articles: true }
-            }
+    console.log("Checking Platform Database Health...");
+
+    const regions = await prisma.region.findMany({
+        include: { _count: { select: { articles: true } } }
+    });
+
+    console.log("\nArticle Counts by Region:");
+    for (const r of regions) {
+        console.log(`- ${r.name} (${r.code}): ${r._count.articles} articles`);
+        if (r.code === 'IN') {
+            const samples = await prisma.article.findMany({
+                where: { regionId: r.id },
+                take: 3,
+                orderBy: { publishDate: 'desc' }
+            });
+            samples.forEach(s => console.log(`  > [SAMPLE] ${s.title}`));
         }
-    });
-
-    console.log("Categories in DB:");
-    for (const c of cats) {
-        console.log(`- ${c.name} (${c._count.articles} articles)`);
     }
-
-    const ukArticles = await prisma.article.findMany({
-        where: { region: { code: 'GB' } },
-        include: { category: true }
-    });
-
-    console.log(`\nUK Articles: ${ukArticles.length}`);
-    const ukCats = new Set(ukArticles.map(a => a.category?.name));
-    console.log(`UK Categories: ${Array.from(ukCats).join(', ')}`);
 }
 
 main().catch(console.error).finally(() => prisma.$disconnect());

@@ -4,8 +4,9 @@
   /* Backgrounds */
   --bg-primary: #050914;
   --bg-secondary: #0a1122;
-  --bg-card: rgba(13, 21, 38, 0.4);
-  --bg-card-hover: rgba(20, 32, 58, 0.6);
+  --bg-card: #0d1526;
+  /* Opaque background */
+  --bg-card-hover: #14203a;
 
   /* Text */
   --text-primary: #f8fafc;
@@ -20,23 +21,25 @@
   --accent-glow: rgba(0, 242, 255, 0.4);
 
   /* System */
-  --border: rgba(30, 58, 95, 0.3);
-  --border-bright: rgba(0, 242, 255, 0.2);
+  --border: rgba(30, 58, 95, 0.5);
+  --border-bright: rgba(0, 242, 255, 0.3);
   --danger: #ff2e63;
   --success: #08f7af;
   --warning: #f59e0b;
 
   /* Effects */
-  --glass-blur: blur(12px);
-  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  --glass-blur: none;
+  /* Disabling blur for opaque look */
+  --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   --grid-color: rgba(30, 58, 95, 0.1);
 }
 
 .light {
   --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.7);
-  --bg-card-hover: rgba(255, 255, 255, 0.9);
+  --bg-card: #ffffff;
+  /* Opaque background for light mode */
+  --bg-card-hover: #f1f5f9;
   --text-primary: #050914;
   --text-secondary: #1e293b;
   --text-muted: #64748b;

@@ -1,77 +1,70 @@
 # UCRIP - Unified Cyber Resource Intelligence Platform
 
-UCRIP is a production-ready, region-aware cybercrime intelligence platform. It aggregates official helplines, reporting portals, and cyber advisories on a premium, state-of-the-art dashboard built for rapid incident response and threat awareness.
+UCRIP is a production-grade, highly specialized cybercrime intelligence platform designed for government agencies and enterprise security teams. It transforms raw cybersecurity data from official national sources (CISA, CERT-In, NCSC, CERT-Bund) into a high-fidelity, actionable "Cyber-Noir" command center.
 
-![UCRIP Dashboard](https://github.com/user-attachments/assets/placeholder-dashboard.png) <!-- Update this link with a screenshot later if needed -->
+![UCRIP Dashboard](https://github.com/user-attachments/assets/placeholder-dashboard.png) <!-- Update this link with your final presentation screenshot -->
 
-## 🌟 Features
+## 🏛️ 100% Official Intelligence Sources
+Unlike generic aggregators, UCRIP strictly enforces a "Zero Third-Party" data policy. All advisories are ingested from verified government portals:
 
-*   **Cyber-Noir Tactical UX/UI**: A premium, high-trust visual design featuring interactive glassmorphism, dynamic data grids, and neon typography.
+*   **🇮🇳 India (CERT-In)**: Powered by a custom **Cheerio-based scraping engine** that bypasses bot detection to fetch official Technical Bulletins (CIAD/CIVN alerts).
+*   **🇺🇸 USA (CISA)**: Direct integration with official Alerts and Industrial Control Systems (ICS) feeds.
+*   **🇬🇧 UK (NCSC)**: Full synchronization with the National Cyber Security Centre threat advisory network.
+*   **🇩🇪 Germany (BSI / CERT-Bund)**: Automated ingestion of German national security bulletins.
+*   **Data Integrity**: 100% of legacy data from commercial news sites (`thehackernews.com`) has been purged to ensure a pure, high-trust environment.
+
+## 🌟 Tactical Defense Features
+
+*   **Cyber-Noir Opaque Dashboard**: A premium, high-impact tactical interface utilizing opaque command-center surfaces for maximum text contrast and visual authority.
 *   **High-Fidelity 3D Tactical Globe**: 
-    - **Dotted Data Grid**: Continents and landmasses rendered as glowing cyan points.
-    - **Geographical Sync**: Threat markers (India, USA, Germany, UK) are mathematically calibrated and rotate in perfect 1:1 synchronization.
-    - **Atmospheric Effects**: Multi-layered glowing halo and pulsing "live" markers.
-    - **HUD Overlays**: "Tactical Intel" and "Vector Targeting" data readouts.
-*   **Region-Aware Architecture**: Dynamically filters content and stats for coverage areas.
-*   **AI Chatbot (CyberGuide AI)**: Integrated with the Gemini AI API to provide region-specific guidance and empathy for cybercrime victims. Features full markdown support for readable, structured advice and a maximized immersive chat mode.
-*   **Real-time RSS Threat Feed Engine**: Automated backend scheduler uses Node-Cron to fetch the latest advisories directly from official government feeds (like CISA, NCSC, CERT-In).
-*   **Dynamic Response Guides**: Actionable, mobile-optimized incident response checklists for common cyber attacks (Ransomware, Phishing, UPI Fraud).
-*   **Helplines & Official Portals Module**: Instantly provides emergency contact numbers and valid crime reporting forms based on the user's localized region.
+    - **Digital Point Cloud**: Continents rendered as glowing cyan data points for a "Satellite Recon" aesthetic.
+    - **Precise Geo-Mapping**: Threat markers are mathematically locked to real-world Lat/Lon coordinates (India, USA, Europe).
+    - **Atmospheric HUD**: Integrated "Tactical Intel" overlays, pulsing threat nodes, and atmospheric lighting.
+*   **CyberGuide AI (Expert Mode)**: Context-aware LLM assistant (Gemini API) trained on regional cyber laws. Supports full **Rich Markdown** replies and a windowed **Maximized Mode** for immersive technical triage.
+*   **Incidence Response Guides**: Built-in tactical playbooks for rapid response to Phishing, Ransomware, and payment fraud, formatted for high-pressure situations.
+*   **Sector-Specific Helplines**: Dynamically updates emergency contacts (e.g., **1930** for India) based on the globally selected region.
 
 ## 🛠 Tech Stack
 
-*   **Frontend**: Next.js 14+ (React), Tailwind CSS, Framer Motion, Three.js (@react-three/fiber), React Markdown, Recharts, Lucide Icons.
-*   **Backend**: Node.js, Express, TypeScript, Node-Cron, RSS-Parser, Google GenAI SDK.
-*   **Database**: Prisma ORM with SQLite (easily translatable to PostgreSQL).
+*   **Frontend**: Next.js 14+ (App Router), Tailwind CSS, Framer Motion, Three.js (@react-three/fiber), React Markdown, Recharts.
+*   **Backend**: Node.js, Express, TypeScript, Node-Cron, Cheerio (Production Scraping), RSS-Parser.
+*   **Database**: Prisma ORM with SQLite (Architected for seamless PostgreSQL scaling).
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Presentation Setup
 
-### Prerequisites
-*   Node.js (v18+)
-*   npm or yarn
-*   A Gemini API Key (for the chatbot)
-
-### 1. Database & Backend Setup
+### 1. Intelligence Engine (Backend)
 ```bash
 cd server
 npm install
 
-# Set up environment variables
-cp .env.example .env
+# Configure .env
+# GEMINI_API_KEY=your_key
+# DATABASE_URL="file:./dev.db"
 
-# Configure .env with your settings:
-# JWT_SECRET=your_super_secret_key
-# GEMINI_API_KEY=your_gemini_api_key
-
-# Push schema to the database
+# Synchronize Database
 npx prisma db push
-
-# Seed the database with Core Data
 npm run seed
 
-# Execute initial scrape for all regions
-npx ts-node force-all-scrape.ts
+# Trigger Force-Sync of Official Data
+# This will run the India Cheerio scraper and US/UK/DE RSS feeds immediately
+npx ts-node run-scraper.ts
 
-# Start the Express server & Cron Scheduler (runs on Port 5000)
+# Launch Operations Center
 npm run dev
 ```
 
-### 2. Frontend Setup
+### 2. Situational Awareness (Frontend)
 ```bash
 cd client
 npm install
 
-# Set up environment variables
-cp .env.example .env.local
 # Ensure NEXT_PUBLIC_API_URL=http://localhost:5000/api
-
-# Start the Next.js development server (runs on Port 3000)
 npm run dev
 ```
 
-Open `http://localhost:3000` in your browser.
+Open `http://localhost:3000` to access the Command Center.
 
 ---
 
@@ -102,7 +95,6 @@ erDiagram
         string name
         string purpose
         string contact
-        string availability
         string regionId FK
     }
     CYBER_PORTAL {
@@ -113,37 +105,16 @@ erDiagram
         string officialUrl
         string regionId FK
     }
-    CHAT_SESSION {
-        string id PK
-        string userId
-        string userMessage
-        string botResponse
-        datetime timestamp
-        string regionId FK
-    }
 
-    REGION ||--o{ ARTICLE : "has"
-    REGION ||--o{ HELPLINE : "has"
-    REGION ||--o{ CYBER_PORTAL : "has"
-    REGION ||--o{ CHAT_SESSION : "has"
-    CATEGORY ||--o{ ARTICLE : "categorizes"
+    REGION ||--o{ ARTICLE : "hosts"
+    REGION ||--o{ HELPLINE : "contains"
+    REGION ||--o{ CYBER_PORTAL : "links"
+    CATEGORY ||--o{ ARTICLE : "classifies"
 ```
 
 ---
 
-## 🤖 Chatbot Sequence Architecture (RAG)
-
-1.  **User Input**: User interacts with the floating, markdown-enabled chatbot on the frontend.
-2.  **Request Construction**: The Next.js client captures the selected Region (e.g., "India") and passes it to the backend.
-3.  **Context Injection**: The Express server looks up the exact region in the DB, retrieving curated, real-world *Helplines* and *Cyber Portals* specific to that zone.
-4.  **Prompt Assembly**: The server constructs a system prompt injected with the DB context.
-5.  **Gemini AI Generation**: The dynamically enriched prompt is resolved by the Google Gemini API.
-6.  **Response Render**: The frontend parses the structured markdown response in an immersive UI. 
-
----
-
-## ⚖️ Ethical & Privacy Disclaimer
-
-1.  **Informational Purposes Only**: This platform aggregates publicly available official resources. It is not a substitute for formal legal or law enforcement advice.
-2.  **No PII Stored**: The chat logs store inputs and outputs for AI model improvement/analytics, but do not request, process, or permanently store Personally Identifiable Information (PII) like names or SSNs during standard usage.
-3.  **Ethical Scraping**: The background RSS scraper strictly adheres to `robots.txt` rules, only targets explicit public RSS XML endpoints, and utilizes interval tracking to respect the infrastructure of official government sites.
+## ⚖️ Operational Integrity
+1.  **Official Source Priority**: The platform serves as a unified lens for official government intelligence only.
+2.  **Privacy by Design**: No PII (Personally Identifiable Information) is requested or stored.
+3.  **Ethical Data Ingestion**: Automated fetchers respect government infrastructure via intelligent interval polling and calibrated headers.
