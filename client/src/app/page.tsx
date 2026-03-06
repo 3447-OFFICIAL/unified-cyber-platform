@@ -167,7 +167,7 @@ export default function DashboardPage() {
             <div>
               <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--text-muted)", marginBottom: 4 }}>EMERGENCY CONTACT</div>
               <div style={{ fontSize: "1.5rem", fontWeight: 900, letterSpacing: "0.05em" }}>
-                {regionCode === "IN" ? "1930" : regionCode === "US" ? "1-800-CALL-FBI" : regionCode === "DE" ? "+49 228 9582-444" : "0300 123 2040"}
+                {stats.emergencyContact}
               </div>
             </div>
             <a href="/helplines" className="glass glass-interactive" style={{ padding: "0.75rem 1.5rem", borderRadius: "8px", textDecoration: "none", color: "var(--text-primary)", fontWeight: 700, fontSize: "0.8rem" }}>

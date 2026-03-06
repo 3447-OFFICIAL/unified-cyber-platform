@@ -12,8 +12,7 @@ export const getDashboardStats = async (req: Request, res: Response) => {
             if (region) regionFilter = { regionId: region.id };
         }
 
-        // Efficiently fetch data for precisely the two requested sections
-        const [latestAdvisories, latestNews, helplineCount, portalCount, articlesByCategory] = await Promise.all([
+        const [latestAdvisories, latestNews, helplineCount, portalCount, articlesByCategory, mainHelpline] = await Promise.all([
             // 1. Advisories Section
             prisma.article.findMany({
                 where: { ...regionFilter, category: { name: "Advisories" } },
@@ -37,9 +36,10 @@ export const getDashboardStats = async (req: Request, res: Response) => {
                     },
                 },
             }),
+            regionFilter.regionId ? prisma.helpline.findFirst({ where: { regionId: regionFilter.regionId } }) : null
         ]);
 
-        const categoryStats = articlesByCategory.map((cat) => ({
+        const categoryStats = articlesByCategory.map((cat: any) => ({
             name: cat.name,
             count: cat.articles.length,
         }));
@@ -58,6 +58,7 @@ export const getDashboardStats = async (req: Request, res: Response) => {
             helplineCount,
             portalCount,
             categoryStats,
+            emergencyContact: (mainHelpline as any)?.contact || "Not Available",
             bitacora: "UCRIP Tactical Intel Engine v2.0",
             resourceCountPerRegion,
         });

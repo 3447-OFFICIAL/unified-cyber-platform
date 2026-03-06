@@ -61,6 +61,7 @@ export interface DashboardStats {
     latestNews: Article[];
     helplineCount: number;
     portalCount: number;
+    emergencyContact: string;
     categoryStats: { name: string; count: number }[];
     resourceCountPerRegion: {
         id: string;

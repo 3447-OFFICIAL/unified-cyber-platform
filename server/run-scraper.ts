@@ -145,12 +145,65 @@ async function fetchCERTIn() {
     } catch (e: any) { console.error("IN Error:", e.message); }
 }
 
+async function fetchHKCERT() {
+    console.log("Fetching Hong Kong (HKCERT) Official Advisories via Cheerio...");
+    try {
+        const response = await fetch("https://www.hkcert.org/security-bulletin", {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            }
+        });
+        const html = await response.text();
+        const $ = cheerio.load(html);
+
+        const region = await prisma.region.findUnique({ where: { code: 'HK' } });
+        const advisoryCat = await prisma.category.findUnique({ where: { name: 'Advisories' } });
+        if (!region || !advisoryCat) return;
+
+        let added = 0;
+        const links: any[] = [];
+        const seen = new Set();
+
+        $("a").each((_, el) => {
+            const href = $(el).attr("href");
+            let text = $(el).text().trim().replace(/\s+/g, ' ');
+            if (href && href.includes("/security-bulletin/") && !href.includes("page=") && text.length > 10) {
+                if (!seen.has(href)) {
+                    seen.add(href);
+                    links.push({ href, text });
+                }
+            }
+        });
+
+        for (const link of links) {
+            if (added >= 10) break;
+            const sourceUrl = link.href.startsWith('http') ? link.href : `https://www.hkcert.org${link.href}`;
+            const exists = await prisma.article.findUnique({ where: { sourceUrl } });
+            if (exists) continue;
+
+            await prisma.article.create({
+                data: {
+                    title: `[HKCERT Official] ${link.text.substring(0, 150)}`,
+                    content: `Official technical advisory from the Hong Kong Computer Emergency Response Team (HKCERT).`,
+                    sourceUrl,
+                    publishDate: new Date(),
+                    regionId: region.id,
+                    categoryId: advisoryCat.id
+                }
+            });
+            added++;
+        }
+        console.log(`Saved ${added} official HK advisories.`);
+    } catch (e: any) { console.error("HK Error:", e.message); }
+}
+
 async function runNow() {
     console.log("Starting full manual sync for Official Government sources...");
     await fetchCERTIn(); // India
     await fetchCISA();   // USA
     await fetchCERTBund(); // Germany
     await fetchNCSC();    // UK
+    await fetchHKCERT();  // Hong Kong
     console.log("Full sync complete.");
 }
 

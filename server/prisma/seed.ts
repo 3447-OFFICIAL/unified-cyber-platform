@@ -26,6 +26,11 @@ async function main() {
         update: {},
         create: { name: "United Kingdom", code: "GB" },
     });
+    const hongKong = await prisma.region.upsert({
+        where: { code: "HK" },
+        update: {},
+        create: { name: "Hong Kong", code: "HK" },
+    });
 
     // Create Categories
     const categoriesData = ["Cybercrime Cases", "Advisories", "Educational"];
@@ -221,7 +226,7 @@ async function main() {
             crimeType: "Social Media Abuse / Online Harassment",
             portalName: "National Cybercrime Reporting Portal",
             description: "Report online harassment, cyberbullying, and morphed images",
-            officialUrl: "https://cybercrime.gov.in/Webform/crime_selectCrimeType.aspx",
+            officialUrl: "https://cybercrime.gov.in/Webform/report_abuse_social_media.aspx",
             regionId: india.id,
         },
         {
@@ -238,6 +243,34 @@ async function main() {
         await prisma.cyberPortal.upsert({ where: { id: p.id }, update: {}, create: p });
     }
 
+    // Seed Helplines - Hong Kong
+    await prisma.helpline.upsert({
+        where: { id: "helpline-hk-1" },
+        update: {},
+        create: {
+            id: "helpline-hk-1",
+            name: "HKCERT Hotline",
+            purpose: "Report cyber security incidents and vulnerabilities",
+            contact: "+852 8105 6060",
+            availability: "24/7",
+            regionId: hongKong.id,
+        },
+    });
+
+    // Seed Portals - Hong Kong
+    const hkPortals = [
+        {
+            id: "portal-hk-1",
+            crimeType: "Cyber Security Incident",
+            portalName: "HKCERT Incident Reporting",
+            description: "Report cyber security incidents to Hong Kong CERT",
+            officialUrl: "https://www.hkcert.org/incident-reporting",
+            regionId: hongKong.id,
+        }
+    ];
+    for (const p of hkPortals) {
+        await prisma.cyberPortal.upsert({ where: { id: p.id }, update: {}, create: p });
+    }
 
     // Seed Sample Articles
     const sampleArticles = [
@@ -304,10 +337,10 @@ async function main() {
     }
 
     console.log("✅ Database seeded successfully!");
-    console.log(`   Regions: India, USA, Germany, United Kingdom`);
-    console.log(`   Helplines: 7 (3 India, 2 USA, 1 Germany, 1 UK)`);
-    console.log(`   Portals: 10 (4 India, 4 USA, 1 Germany, 1 UK)`);
-    console.log(`   Articles: ${sampleArticles.length}`);
+    console.log(`   Regions: India, USA, Germany, United Kingdom, Hong Kong`);
+    console.log(`   Helplines: 8 (3 India, 2 USA, 1 Germany, 1 UK, 1 HK)`);
+    console.log(`   Portals: 11 (4 India, 4 USA, 1 Germany, 1 UK, 1 HK)`);
+    console.log(`   Articles: ${sampleArticles.length} (Sample data)`);
 }
 
 main()

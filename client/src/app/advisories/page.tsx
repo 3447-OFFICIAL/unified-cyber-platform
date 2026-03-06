@@ -30,7 +30,12 @@ export default function AdvisoriesPage() {
     useEffect(() => {
         // Fetch categories only once on mount
         if (categories.length === 0) {
-            api.get("/advisories/categories").then(r => setCategories(r.data));
+            api.get("/advisories/categories").then(r => {
+                const validCategories = r.data.filter((c: Category) =>
+                    c.name !== "Cybercrime Cases" && c.name !== "Educational"
+                );
+                setCategories(validCategories);
+            });
         }
 
         const code = localStorage.getItem("selectedRegionCode") || "IN";
