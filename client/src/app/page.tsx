@@ -178,7 +178,7 @@ export default function DashboardPage() {
 
         <motion.div variants={itemVariants as any} style={{ height: "100%", minHeight: "400px", position: "relative" }}>
           <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-            <TacticalGlobe />
+            <TacticalGlobe regionCode={regionCode} />
           </div>
           {/* HUD Overlay elements */}
           <div style={{ position: "absolute", top: 20, right: 20, textAlign: "right" }} className="neon-text">

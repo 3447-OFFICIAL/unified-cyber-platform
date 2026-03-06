@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls, Sphere, Stars, Float, Points, Point } from "@react-three/drei";
 import * as THREE from "three";
@@ -18,20 +18,37 @@ const latLonToVector3 = (lat: number, lon: number, radius: number) => {
     return new THREE.Vector3(x, y, z);
 };
 
-function DottedGlobe() {
+import countryCoordinates from "../lib/countryCoordinates.json";
+
+function DottedGlobe({ regionCode }: { regionCode: string }) {
     const groupRef = useRef<THREE.Group>(null);
     const texture = useLoader(THREE.TextureLoader, "/world_map.png");
 
-    const markers = useMemo(() => [
-        { label: "India", pos: latLonToVector3(20.5937, 78.9629, 1.01) },
-        { label: "USA", pos: latLonToVector3(37.0902, -95.7129, 1.01) },
-        { label: "Germany", pos: latLonToVector3(51.1657, 10.4515, 1.01) },
-        { label: "UK", pos: latLonToVector3(55.3781, -3.4360, 1.01) },
-    ], []);
+    const targetRotation = useRef(new THREE.Euler(0, 0, 0));
+    const [markers, setMarkers] = useState<{ label: string, pos: THREE.Vector3, code: string }[]>([]);
+
+    useEffect(() => {
+        // Build markers. Only add the active region to save clutter, or add all known regions.
+        // Let's ensure the active region always has a marker.
+        const coords = (countryCoordinates as any)[regionCode] || { lat: 20.5937, lon: 78.9629 };
+
+        setMarkers([
+            { label: regionCode, pos: latLonToVector3(coords.lat, coords.lon, 1.01), code: regionCode }
+        ]);
+
+        // Calculate rotation so this coordinate faces the camera
+        // The camera is at +Z. The point at lat=0, lon=-90 is facing +Z natively in our mapping.
+        const targetLat = (coords.lat * Math.PI) / 180;
+        const targetLon = ((coords.lon + 90) * Math.PI) / 180;
+
+        targetRotation.current.set(targetLat, targetLon, 0);
+    }, [regionCode]);
 
     useFrame((state, delta) => {
         if (groupRef.current) {
-            groupRef.current.rotation.y += delta * 0.1;
+            // Smooth rotation towards target
+            groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotation.current.x, 0.05);
+            groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotation.current.y, 0.05);
         }
     });
 
@@ -57,8 +74,8 @@ function DottedGlobe() {
             </points>
 
             {/* Pulsing Markers (Nested inside rotation) */}
-            {markers.map((m, i) => (
-                <PulsingMarker key={i} position={m.pos} label={m.label} />
+            {markers.map((m: any, i: number) => (
+                <PulsingMarker key={`${m.code}-${i}`} position={m.pos} label={m.label} />
             ))}
 
             {/* Faint Grid lines */}
@@ -133,7 +150,7 @@ function PulsingMarker({ position, label }: MarkerProps) {
     );
 }
 
-export default function TacticalGlobe() {
+export default function TacticalGlobe({ regionCode = "IN" }: { regionCode?: string }) {
     return (
         <div style={{
             width: "100%",
@@ -154,7 +171,7 @@ export default function TacticalGlobe() {
                 <Stars radius={100} depth={50} count={1500} factor={4} saturation={0} fade speed={0.5} />
 
                 <Float speed={1.2} rotationIntensity={0.1} floatIntensity={0.3}>
-                    <DottedGlobe />
+                    <DottedGlobe regionCode={regionCode} />
                     <AtmosphericGlow />
                 </Float>
 
