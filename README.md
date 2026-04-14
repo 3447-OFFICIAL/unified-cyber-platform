@@ -1,4 +1,4 @@
-# UCRIP - Unified Cyber Resource Intelligence Platform
+# UCRIP - Unified Cyber Resource Intelligence Platform v1
 
 UCRIP is a production-grade, which is highly specialized cybercrime intelligence platform designed for government agencies and enterprise security teams. It transforms raw cybersecurity data from official national sources (CISA, CERT-In, NCSC, CERT-Bund) into a high-fidelity, actionable "Cyber-Noir" command center.
 
@@ -152,3 +152,7 @@ The purpose of public publication is:
 *   Knowledge sharing within ethical and legal boundaries
 
 © DeepCytes Cyber Labs (UK). All rights reserved.
+
+
+
+We are Working On V2. Stay Tuned!
